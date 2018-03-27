@@ -38,20 +38,7 @@ MongoClient.connect(mongoDbUri, (error, client) => {
     //     console.log('Unable to fetch todos', error);        
     // })
 
-    // just for testing, insert a bunch of TodoItems with the same item id
-    var todoItem = new TodoItem(null, 'This is my to do');
-    // var ref = todoItem.ref;
-    // for(var i = 0; i < 10000; i++) {
-    //     db.collection(TodoItem.collectionName).insertOne(todoItem, 
-    //         (error, result) => {
-    //             if (error) {
-    //                 console.log('Unable to insert ToDoItem', error);
-    //                 return;
-    //             }
-    //             console.log(JSON.stringify(result.ops, undefined, 2));
-    //          });
-    //     todoItem = new TodoItem(ref, `This is my to do version ${i}`);
-    // }
+
 
     // find documents using the timestamp of the ObjectID.  This will enable using mongodb as immutable store
     var timestamp = new Date('2018/03/23').getTime();

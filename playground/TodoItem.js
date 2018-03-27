@@ -1,15 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var mongodb_1 = require("mongodb");
+var uuid_1 = require("uuid");
 var TodoItem = /** @class */ (function () {
-    function TodoItem(id, text) {
+    function TodoItem(ref, text) {
         this.text = text;
         this.completed = false;
-        if (id) {
-            this.ref = id;
+        if (ref) {
+            this.ref = ref;
         }
         else {
-            this.ref = new mongodb_1.ObjectID();
+            this.ref = uuid_1.v4();
         }
     }
     TodoItem.collectionName = 'Todos';

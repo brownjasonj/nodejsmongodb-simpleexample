@@ -1,19 +1,19 @@
-import { ObjectID } from 'mongodb';
+import { v4 as uuid} from 'uuid';
 
 class TodoItem {
     public static collectionName: string = 'Todos'
-    public ref: ObjectID;
+    public ref: string;
     public text: string;
     public completed: boolean;
 
-    constructor(id: ObjectID | null, text: string) {
+    constructor(ref: string | null, text: string) {
         this.text = text;
         this.completed = false;
-        if (id) {
-            this.ref = id;
+        if (ref) {
+            this.ref = ref;
         }
         else {
-            this.ref = new ObjectID();
+            this.ref = uuid();
         }
     }
 }
