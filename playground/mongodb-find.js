@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var mongodb_1 = require("mongodb");
-var User_1 = require("./User");
 var TodoItem_1 = require("./TodoItem");
 var mongoDbUri = 'mongodb://localhost:27017';
 var mongoDbName = 'TodoApp';
@@ -19,14 +18,28 @@ mongodb_1.MongoClient.connect(mongoDbUri, function (error, client) {
     // }, (error) => {
     //     console.log('Unable to fetch todos', error);
     // });
-    db.collection(TodoItem_1.TodoItem.collectionName).find().count().then(function (count) {
-        console.log("Todos count: " + count + "\n");
-    }, function (error) {
-        console.log('Unable to fetch todos', error);
-    });
-    db.collection(User_1.User.collectionName).find({ name: 'Fred' }).forEach(function (doc) {
-        var user = doc;
-        console.log("User : " + user.name);
+    // db.collection(TodoItem.collectionName).find().count().then((count) => {
+    //     console.log(`Todos count: ${count}\n`);
+    // }, (error) => {
+    //     console.log('Unable to fetch todos', error);
+    // });
+    // db.collection(User.collectionName).find({name: 'Fred'}).forEach((doc) => {
+    //     var user = doc as User;
+    //     console.log(`User : ${user.name}`);
+    // }, (error) => {
+    //     console.log('Unable to fetch todos', error);        
+    // })
+    // find documents using the timestamp of the ObjectID.  This will enable using mongodb as immutable store
+    var timestamp = new Date('2018/03/23').getTime();
+    //var timestamp = Date.now();
+    var objectId = mongodb_1.ObjectID.createFromTime(timestamp / 1000);
+    // db.collection(TodoItem.collectionName).find({_id: {$gt: objectId}, completed: false}).forEach((doc) => {
+    //     console.log(`Todo : ${JSON.stringify(doc)}`);
+    // }, (error) => {
+    //     console.log('Unable to fetch todos', error);        
+    // })
+    db.collection(TodoItem_1.TodoItem.collectionName).find({ _id: { $gt: objectId } }).sort({ _id: -1 }).forEach(function (doc) {
+        console.log("Todo : " + JSON.stringify(doc));
     }, function (error) {
         console.log('Unable to fetch todos', error);
     });

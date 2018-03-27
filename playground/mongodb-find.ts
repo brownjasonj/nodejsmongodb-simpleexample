@@ -25,17 +25,37 @@ MongoClient.connect(mongoDbUri, (error, client) => {
     //     console.log('Unable to fetch todos', error);
     // });
 
-    db.collection(TodoItem.collectionName).find().count().then((count) => {
-        console.log(`Todos count: ${count}\n`);
-    }, (error) => {
-        console.log('Unable to fetch todos', error);
-    });
+    // db.collection(TodoItem.collectionName).find().count().then((count) => {
+    //     console.log(`Todos count: ${count}\n`);
+    // }, (error) => {
+    //     console.log('Unable to fetch todos', error);
+    // });
 
-    db.collection(User.collectionName).find({name: 'Fred'}).forEach((doc) => {
-        var user = doc as User;
-        console.log(`User : ${user.name}`);
+    // db.collection(User.collectionName).find({name: 'Fred'}).forEach((doc) => {
+    //     var user = doc as User;
+    //     console.log(`User : ${user.name}`);
+    // }, (error) => {
+    //     console.log('Unable to fetch todos', error);        
+    // })
+
+    // find documents using the timestamp of the ObjectID.  This will enable using mongodb as immutable store
+    var timestamp = new Date('2018/03/23').getTime();
+    //var timestamp = Date.now();
+    var objectId = ObjectID.createFromTime(timestamp / 1000);
+
+    // db.collection(TodoItem.collectionName).find({_id: {$gt: objectId}, completed: false}).forEach((doc) => {
+    //     console.log(`Todo : ${JSON.stringify(doc)}`);
+    // }, (error) => {
+    //     console.log('Unable to fetch todos', error);        
+    // })
+
+
+    db.collection(TodoItem.collectionName).find({_id: {$gt: objectId}}).sort({ _id: -1 }).forEach((doc) => {
+        console.log(`Todo : ${JSON.stringify(doc)}`);
     }, (error) => {
         console.log('Unable to fetch todos', error);        
     })
+
+
     // client.close();
 });
