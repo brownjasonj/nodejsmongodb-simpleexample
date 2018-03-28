@@ -3,12 +3,10 @@ import { v4 as uuid} from 'uuid';
 
 var todoItemSchema: Schema = new Schema({
   ref: {
-      type: String,
-      required: true 
+      type: String
     },
   createdAt: {
-      type: Date,
-      required: true
+      type: Date
     },
   text: {
       type: String,
@@ -22,10 +20,19 @@ var todoItemSchema: Schema = new Schema({
     },
   completedAt: {
       type: Date,
-      required: true,
       default: null
   }
 });
+
+todoItemSchema.pre('save', function (next) {
+    if (!this.createdAt) {
+        this.createdAt = new Date;
+    }
+    if (!this.ref) {
+        this.ref = uuid();
+    }
+    next();
+  });
 
 
 // todoItemSchema.pre("save", function (next) {

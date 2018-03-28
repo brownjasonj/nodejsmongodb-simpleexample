@@ -1,38 +1,34 @@
 import {connect, Schema, model } from 'mongoose';
-import { v4 as uuid} from 'uuid';
+import express from 'express';
+import bodyParser from 'body-parser';
 
-import { todoItemSchema } from '../schemas/todoItem';
-import { UserSchema } from '../schemas/user';
+import { todoItemModel } from '../model/todoitemmodel';
 
 const mongoDbUri = 'mongodb://localhost:27017';
 const mongoDbName = 'TodoApp';
 
 require('mongoose').Promise = global.Promise;
-
 connect(`${mongoDbUri}/${mongoDbName}`);
 
-// var Todo = model('Todo', todoItemSchema);
+var app = express();
 
-// var newTodo = new Todo({
-//     ref: uuid(),
-//     text: 'Got for lunch',
-//     completed: false
-// });
+app.use(bodyParser.json());
 
-// newTodo.save().then((doc) => {
-//     console.log('Saved todo', doc)
-// }, (error) => {
-//     console.log("Unable to save ToDo");
-// });
+app.post('/todos', (request, response) => {
+    console.log(request.body);
+    
+    var todo = new todoItemModel( {
+        text: request.body.text
+    });
 
-var UserModel = model('User', UserSchema);
-
-var newUser = new UserModel({
-    email: "brownjasonj@gmail.com"
+    todo.save().then((doc) => {
+        response.send(doc);
+    }, (error) => { 
+        response.status(400).send(error);
+    });
 });
 
-newUser.save().then((doc) => {
-    console.log('Save user', doc);
-}, (error) => {
-    console.log('Unable to save User');
-})
+
+app.listen(3000, () => {
+    console.log(`Started on port 3000`);
+});
