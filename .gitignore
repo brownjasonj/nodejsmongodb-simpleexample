@@ -1,5 +1,5 @@
 # this is typescript project, so ignore .js
-.js
+dist/
 
 # Dependency directories
 node_modules/
