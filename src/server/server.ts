@@ -64,7 +64,15 @@ app.delete('/todos/:id', (request, response) => {
         });
     }
 
-
+    todoItemModel.findByIdAndRemove(id).then((todo) => {
+        response.send({
+            todo
+        });
+    }, (error) => {
+        response.status(400).send({
+            error: `Couldn't delete document ${id}, ${error}`
+        });
+    });
 });
 
 app.listen(3000, () => {

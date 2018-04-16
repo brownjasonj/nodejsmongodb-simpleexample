@@ -45,17 +45,19 @@ Given('I have no todos', (callback)=> {
 });
   
 When('I save a todo with title {string}', (text, callback) => {
+    answer = 1;
     axios({
         method: 'post',
-        url: 'localhost:3000/todos',
+        url: 'http://localhost:3000/todos',
         headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
         data: {
           text
         }
       }).then(response => {
         answer = 1;
-        console.log(`${response}`);
+        console.log(`Response = ${response}`);
       }).catch(error => {
+          answer = 1;
           console.log(`Error: ${error}`)
       });
 
