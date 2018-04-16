@@ -2,6 +2,7 @@ import { Given, When, Then} from 'cucumber';
 //import { defineSupportCode } from 'cucumber';
 import assert from 'assert' ;
 import request from 'supertest';
+import axios from 'axios';
 
 import { app } from '../../../src/server/server';
 import { todoItemModel } from '../../../src/model/todoitemmodel';
@@ -38,24 +39,42 @@ let state: State = new State();
 let answer: number = 0;
 
 
-Given('I have no todos', ()=> {
+Given('I have no todos', (callback)=> {
     assert.equal(true,true);
+    callback();
 });
   
-When('I save a todo with title {string}', (text) => {
-    answer = 1;
-    request(app)
-    .post('/todos')
-    .send({text})
-    .set('Accept', 'application/json')
-    //.end(state.processResponse.bind(state));
-    .then(response => {
-        console.log(`${response.body.text}`);
-    });
+When('I save a todo with title {string}', (text, callback) => {
+    axios({
+        method: 'post',
+        url: 'localhost:3000/todos',
+        headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+        data: {
+          text
+        }
+      }).then(response => {
+        answer = 1;
+        console.log(`${response}`);
+      }).catch(error => {
+          console.log(`Error: ${error}`)
+      });
+
+    // request(app)
+    // .post('/todos')
+    // .send({text})
+    // .set('Accept', 'application/json')
+    // //.end(state.processResponse.bind(state));
+    // .then(response => {
+    //     answer = 1;
+    //     console.log(`${response.body.text}`);
+    // });
+
+    callback();
 });
   
-Then('I receive confirmation the todo has been saved with title {string}' , (text) => {
+Then('I receive confirmation the todo has been saved with title {string}' , (text, callback) => {
     assert.equal(answer, 1);
     assert.equal(state.resStatus, 200);
     assert.equal(state.resText, text);
+    callback();
 });

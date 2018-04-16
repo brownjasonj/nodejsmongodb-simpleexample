@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/cucumber": "^4.0.1",
+    "axios": "^0.18.0",
     "body-parser": "^1.18.2",
     "express": "^4.16.3",
     "mongodb": "^3.0.5",
@@ -25,6 +26,7 @@
     "@types/mongoose": "^5.0.7",
     "@types/supertest": "^2.0.4",
     "@types/uuid": "^3.4.3",
+    "axiosist": "^0.1.0",
     "cucumber": "^4.1.0",
     "nodemon": "^1.17.1",
     "supertest": "^3.0.0"

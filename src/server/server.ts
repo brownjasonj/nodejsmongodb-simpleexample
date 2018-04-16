@@ -1,6 +1,7 @@
 import {connect, Schema, model } from 'mongoose';
 import express from 'express';
 import bodyParser from 'body-parser';
+import { ObjectID } from 'mongodb';
 
 import { todoItemModel } from '../model/todoitemmodel';
 
@@ -38,6 +39,33 @@ app.get('/todos', (request, response) => {
     });
 });
 
+app.get('/todos/:id', (request, response) => {
+    var id = request.params.id;
+
+    if (!ObjectID.isValid(id)) {
+        response.status(404).send();
+    }
+
+    todoItemModel.findById(id).then((todos) => {
+        response.send({
+            todos
+        });
+    }).catch(error => {
+        response.status(404).send(error);
+    });
+});
+
+app.delete('/todos/:id', (request, response) => {
+    var id = request.params.id;
+
+    if (!ObjectID.isValid(id)) {
+        response.status(404).send({
+            error: `Invalid id ${id}`
+        });
+    }
+
+
+});
 
 app.listen(3000, () => {
     console.log(`Started on port 3000`);
